@@ -6,9 +6,8 @@
 #include "RectItem.h"
 #include "FloatItem.h"
 #include "BoolItem.h"
-#include "NodeItem.h"
 
-MessageListView::MessageListView(BMessage * forContainer):BOutlineListView(rect,"MessageListView")
+MessageListView::MessageListView(BMessage * forContainer):BOutlineListView("MessageListView")
 {
 	container		= forContainer;
 }
@@ -78,7 +77,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				}
 				BMessage *tmpMessage = new BMessage(*editMessage);
 				stringItem->SetMessage(tmpMessage);
-				stringItem->SetTarget(doc);
+//				stringItem->SetTarget(doc);
 				break;
 			}
 			case B_RECT_TYPE:
@@ -96,7 +95,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				}
 				BMessage *tmpMessage = new BMessage(*editMessage);
 				rectItem->SetMessage(tmpMessage);
-				rectItem->SetTarget(doc);
+	//			rectItem->SetTarget(doc);
 				break;
 			}
 			case B_FLOAT_TYPE:
@@ -137,34 +136,10 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 			}
 			case B_POINTER_TYPE:
 			{
-				if (strcmp(name,P_C_NODE_OUTGOING) == B_OK)
-				{
-					BList		*list		= NULL;
-					BStringItem	*masterItem	= new BStringItem(name);
-					BMessage	*connection	= NULL;
-					BMessage	*toNode		= NULL;
-					if (superItem)
-						AddUnder(masterItem,superItem);
-					else
-						AddItem(masterItem);
-					message->FindPointer(name,count-1,(void **)&list);
-					
-					for (int32 i=0;i<list->CountItems();i++)
-					{	
-						connection	= (BMessage*)list->ItemAt(i);
-						connection->FindPointer(P_C_NODE_CONNECTION_TO,(void **)&toNode);
-						AddUnder(new NodeItem(toNode),masterItem);
-					}
-				}
-
-/*				message->FindPointer(name,count,(void **)&pointer);
-				char	*className = (char *)class_name(pointer);
-				if (superItem)
-					AddUnder(new StringItem(name,className),superItem);
-				else
-					AddItem(new StringItem(name,className));
-
-				break;*/
+				void *pointer;
+				message->FindPointer(name,count,(void **)&pointer);
+				
+				break;
 			}
 		}
 
@@ -173,7 +148,6 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 
 void MessageListView::MessageReceived(BMessage *message)
 {
-	TRACE();
 	BaseListItem	*item;
 	switch(message->what) 
 	{
