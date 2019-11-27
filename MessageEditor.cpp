@@ -4,34 +4,31 @@
  */
 
 
-#include "MessageEditor.h"
-
-#include <app/Roster.h>
-#include <interface/Alert.h>
-#include <interface/Rect.h>
 
 #include <storage/Directory.h>
-#include <storage/Entry.h>
+#include <storage/File.h>
 #include <storage/FindDirectory.h>
 #include <storage/Path.h>
 #include <translation/TranslationUtils.h>
 
 #include <string.h>
+#include <stdio.h>
+
+#include "MessageEditor.h"
 
 
-ProjektConceptor::ProjektConceptor():BApplication(APP_SIGNATURE) {
+MessageEditor::MessageEditor():BApplication(APP_SIGNATURE) {
 	//RegisterMime();
-	mWindow= new MessageEditorWindow();
+	mWindow= new MessageEditorWindow(100.0,100.0,600.0,500.0);
+	mWindow->CenterOnScreen();
 }
 
-ProjektConceptor::~ProjektConceptor() {
-	TRACE();
+MessageEditor::~MessageEditor() {
 	delete mWindow;
 }
 
-void ProjektConceptor::ReadyToRun() {
-	TRACE();
-	//creat settingsfolder
+void MessageEditor::ReadyToRun() {
+	//create settingsfolder
 	BPath		settings;
 	status_t	err				= B_OK;
 	BDirectory	*settingsDir	= NULL;
@@ -44,58 +41,58 @@ void ProjektConceptor::ReadyToRun() {
 /**
  * @todo request the Quit .. don´t simply quit all without asking (so that there is chance to save or abort because the document has changed)
  */
-bool ProjektConceptor::QuitRequested() {
-	TRACE();
-	delete
+bool MessageEditor::QuitRequested() {
+	delete mWindow;
 	return true;
 }
 
-void ProjektConceptor::MessageReceived(BMessage *message) {
-	TRACE();
+void MessageEditor::MessageReceived(BMessage *message) {
 	switch(message->what) {
-		case MENU_FILE_OPEN: {
-//			openPanel->Show();		// Show the file panel
+/*		case MENU_FILE_OPEN: {
 			break;
 		}
 		case MENU_FILE_NEW: {
 			break;
-		}
+		}*/
 		default:
 			BApplication::MessageReceived(message);
 			break;
 	}
 }
 
-void ProjektConceptor::RefsReceived(BMessage *msg) {
-	TRACE();
+void MessageEditor::RefsReceived(BMessage *msg) {
 	uint32 		type;
 	int32 		count;
-	BEntry		*entry=new BEntry();
 	entry_ref	ref;
 
 	msg->GetInfo("refs", &type, &count);
 
 	// not a entry_ref?
 	if (type != B_REF_TYPE) {
-		delete entry;
 		return;
 	}
 
-	if (msg->FindRef("refs", 0, &ref) == B_OK)
-		if (entry->SetTo(&ref,true)==B_OK) {
-			PDocument *doc=documentManager->PDocumentAt(0);
-			doc->SetEntry(&ref);
-			doc->Load();
+	if (msg->FindRef("refs", 0, &ref) == B_OK){
+			BFile *messageFile = new BFile(&ref, B_READ_WRITE);
+			if (messageFile->InitCheck()==B_OK){
+				BMessage *toLoad = new BMessage();
+				if (toLoad->Unflatten(messageFile) == B_OK){
+					mWindow->SetMessage(toLoad);
+				}
+				else
+					printf("could not parse BMessage");
+			}
+			else
+				printf("ERROR initilizing File\n");
+			delete messageFile;	
 		}
-	delete entry;
 }
 
-void ProjektConceptor::AboutRequested() {
-	TRACE();
+void MessageEditor::AboutRequested() {
 	//**ToDo implement a about Window
 }
 
-void ProjektConceptor::ArgvReceived(int32 argc, char **argv) {
+void MessageEditor::ArgvReceived(int32 argc, char **argv) {
 	if (argc>1) {
 		BEntry ref(argv[1]);
 		if (ref.Exists()){

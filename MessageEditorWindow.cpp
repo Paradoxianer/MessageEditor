@@ -57,33 +57,25 @@ MessageEditorWindow::MessageEditorWindow(float left, float top, float right, flo
 }
 
 
-MessageEditorWindow::~MessageEditorWindow()
-{
+MessageEditorWindow::~MessageEditorWindow() {
 	delete fCurrentMessage;
 	delete fOpenFilePanel;	
 }
 
 
 void
-MessageEditorWindow::MessageReceived(BMessage *msg)
-{
-
-	switch(msg->what)
-	{
-
-		case MENU_ABOUT:
-		{
+MessageEditorWindow::MessageReceived(BMessage *msg) {
+	switch(msg->what) {
+		case MENU_ABOUT: {
 			be_app->PostMessage(B_ABOUT_REQUESTED);
 			break;
 		}
 		
-		case MENU_OPEN:
-		{
+		case MENU_OPEN: {
 			fOpenFilePanel->Show();
 			break;
 		}		
-		default:
-		{
+		default: {
 			BWindow::MessageReceived(msg);
 			break;
 		}
@@ -91,4 +83,6 @@ MessageEditorWindow::MessageReceived(BMessage *msg)
 	}
 }
 
+void MessageEditorWindow::SetMessage(BMessage *newMessage){
+};
 

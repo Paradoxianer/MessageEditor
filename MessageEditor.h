@@ -18,10 +18,10 @@
 
 #define	APP_SIGNATURE			"application/x-vnd.MessageEditor"
 
-class ProjektConceptor : public BApplication {
+class MessageEditor : public BApplication {
     public:
-									ProjektConceptor();
-									~ProjektConceptor();
+									MessageEditor();
+									~MessageEditor();
 
 	virtual	void					ReadyToRun(void);
 	virtual	bool					QuitRequested(void);
@@ -31,7 +31,7 @@ class ProjektConceptor : public BApplication {
 	virtual	void					ArgvReceived(int32 argc, char **argv);
 //	virtual	void					RegisterMime(void);
     private:
-    	MessageEditorWindow			mWindow;
+    	MessageEditorWindow			*mWindow;
     
 };
 #endif

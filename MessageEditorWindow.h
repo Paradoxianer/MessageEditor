@@ -18,7 +18,7 @@ public:
 	~MessageEditorWindow();
 	void MessageReceived(BMessage *msg);
 	void SetMessage(BMessage *newMessage);
-	BMessage Message(){return fCurrentMessage;);
+	BMessage* Message(){return fCurrentMessage;};
 	bool QuitRequested();
 
 private:
