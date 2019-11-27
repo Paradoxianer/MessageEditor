@@ -6,7 +6,7 @@
 
 # The name of the binary.
 # NAME = libfontpanel.lib
-NAME = FontPanelTest
+NAME = MessageEditor
 # The type of binary, must be one of:
 #	APP:	Application
 #	SHARED:	Shared library or add-on
@@ -63,7 +63,7 @@ RSRCS =
 #	- 	if your library does not follow the standard library naming scheme,
 #		you need to specify the path to the library and it's name.
 #		(e.g. for mylib.a, specify "mylib.a" or "path/mylib.a")
-LIBS = be localestub
+LIBS = be root localestub tracker
 
 #	Specify additional paths to directories following the standard libXXX.so
 #	or libXXX.a naming scheme. You can specify full paths or paths relative
