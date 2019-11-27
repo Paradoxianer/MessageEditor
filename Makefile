@@ -32,6 +32,7 @@ APP_MIME_SIG = application/x-vnd.libfontpanel
 SRCS =	BoolItem.cpp \
 		FloatItem.cpp \
 		MessageEditor.cpp \
+		MessageEditorWindow.cpp \
 		MessageListView.cpp \
 		PointerItem.cpp \
 		RectItem.cpp \
