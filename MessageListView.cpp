@@ -31,6 +31,8 @@ void MessageListView::ValueChanged()
 
 void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 {
+	if (message==NULL)
+		return;
 	char		*name; 
 	uint32		type; 
 	int32		count;
