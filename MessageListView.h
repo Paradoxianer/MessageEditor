@@ -18,6 +18,7 @@ public:
 	virtual	void		MouseDown(BPoint point);
 	virtual void		AttachedToWindow(void);
 	virtual	BMessage*	GetContainer(void){return container;};
+	virtual void		SetContainer(BMessage *message);
 	virtual	void		ValueChanged(void);
 
 	virtual	void		MessageReceived(BMessage *msg);

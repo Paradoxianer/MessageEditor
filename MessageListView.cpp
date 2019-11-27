@@ -6,10 +6,12 @@
 #include "RectItem.h"
 #include "FloatItem.h"
 #include "BoolItem.h"
+#include "MessageEditorDefs.h"
 
-MessageListView::MessageListView(BMessage * forContainer):BOutlineListView("MessageListView")
+MessageListView::MessageListView(BMessage * forContainer):BOutlineListView(BRect(0,0,500,400),"MessageListView")
 {
 	container		= forContainer;
+	baseEditMessage	= new BMessage(MESSAGE_VALUE_CHANGED);
 }
 
 
@@ -25,6 +27,12 @@ void MessageListView::AttachedToWindow(void)
 
 void MessageListView::ValueChanged()
 {
+	MakeEmpty();
+	AddMessage(container,NULL);
+}
+
+void MessageListView::SetContainer(BMessage *message){
+	container = message;
 	MakeEmpty();
 	AddMessage(container,NULL);
 }
@@ -47,6 +55,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				if (message->FindMessage(name,count-1,tmpMessage)==B_OK)
 				{
 					BListItem	*newSuperItem=new BStringItem(name);
+					LockLooper();
 					if (superItem)
 						AddUnder(newSuperItem,superItem);
 					else
@@ -55,10 +64,11 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 						delete editMessage;
 						editMessage		= new BMessage(*baseEditMessage);
 					}
-					editMessage->FindMessage("valueContainer",valueContainer);
-					valueContainer->AddString("subgroup",name);
-					editMessage->ReplaceMessage("valueContainer",valueContainer);
+					//need to create a good Message to change the BMessage
+					/*editMessage->FindString("_subgroup",valueContainer);
+					editMessage->ReplaceMessage("valueContainer",valueContainer);*/
 					AddMessage(tmpMessage,newSuperItem);
+					UnlockLooper();
 				}
 				break;
 			}
@@ -93,7 +103,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				{
 					AddItem(rectItem);
 					delete editMessage;
-					editMessage		= new BMessage(*baseEditMessage);
+				//	editMessage		= new BMessage(*baseEditMessage);
 				}
 				BMessage *tmpMessage = new BMessage(*editMessage);
 				rectItem->SetMessage(tmpMessage);

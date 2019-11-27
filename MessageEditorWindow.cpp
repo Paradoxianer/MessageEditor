@@ -87,6 +87,7 @@ MessageEditorWindow::MessageReceived(BMessage *msg) {
 }
 
 void MessageEditorWindow::SetMessage(BMessage *newMessage){
+	mListView->SetContainer(newMessage);
 };
 
 bool MessageEditorWindow::QuitRequested(){

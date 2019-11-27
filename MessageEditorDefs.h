@@ -41,6 +41,8 @@ const uint32	MENU_SEARCH_REPLACE_ALL			= 'MSra';
 
 const uint32	MENU_HELP_ABOUT					= 'MHab';
 
+const uint32	MESSAGE_VALUE_CHANGED			= 'Mchg';
+
 
 extern const int32		M_E_VERSION;//						= "0.01";
 
