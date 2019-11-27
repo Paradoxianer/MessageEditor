@@ -15,8 +15,7 @@
 
 #include <Application.h>
 #include "MessageEditorWindow.h"
-
-#define	APP_SIGNATURE			"application/x-vnd.MessageEditor"
+#include "MessageEditorDefs.h"
 
 class MessageEditor : public BApplication {
     public:
