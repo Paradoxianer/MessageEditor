@@ -1,9 +1,6 @@
 #include <support/ClassInfo.h>
 #include <string.h>
 
-#include "ProjectConceptorDefs.h"
-#include "PDocument.h"
-
 #include "MessageListView.h"
 #include "StringItem.h"
 #include "RectItem.h"
@@ -11,15 +8,9 @@
 #include "BoolItem.h"
 #include "NodeItem.h"
 
-MessageListView::MessageListView(PDocument *document,BRect rect, BMessage * forContainer):BOutlineListView(rect,"MessageListView")
+MessageListView::MessageListView(BMessage * forContainer):BOutlineListView(rect,"MessageListView")
 {
-	doc				= document;
 	container		= forContainer;
-	baseEditMessage	=  new BMessage(P_C_EXECUTE_COMMAND);
-	baseEditMessage->AddPointer("node",container);
-	baseEditMessage->AddString("Command::Name","ChangeValue");
-	baseEditMessage->AddMessage("valueContainer",new BMessage());
-	editMessage		= new BMessage(*baseEditMessage);
 }
 
 
@@ -44,11 +35,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 	char		*name; 
 	uint32		type; 
 	int32		count;
-	#ifdef B_ZETA_VERSION_1_0_0
-	for (int32 i = 0; message->GetInfo(B_ANY_TYPE, i,(const char **) &name, &type, &count) == B_OK; i++)
-	#else
 	for (int32 i = 0; message->GetInfo(B_ANY_TYPE, i,(char **) &name, &type, &count) == B_OK; i++)
-	#endif
 	{
 		switch(type)
 		{
@@ -127,7 +114,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				}
 				BMessage *tmpMessage = new BMessage(*editMessage);
 				floatItem->SetMessage(tmpMessage);
-				floatItem->SetTarget(doc);
+			//	floatItem->SetTarget(doc);
 				break;
 			}
 			case B_BOOL_TYPE:
@@ -145,7 +132,7 @@ void MessageListView::AddMessage(BMessage *message,BListItem* superItem)
 				}
 				BMessage *tmpMessage = new BMessage(*editMessage);
 				boolItem->SetMessage(tmpMessage);
-				boolItem->SetTarget(doc);
+				//boolItem->SetTarget(doc);
 				break;
 			}
 			case B_POINTER_TYPE:

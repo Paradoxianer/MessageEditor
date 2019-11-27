@@ -8,16 +8,15 @@
 #include <interface/Point.h>
 #include <interface/Rect.h>
 
-class PDocument;
 const uint32	M_L_VALUE_CHANGED		= 'mlVC';
 
 class MessageListView : public BOutlineListView
 {
 
 public:
-						MessageListView(PDocument *document,BRect rect, BMessage * forContainer);
+						MessageListView(BMessage * forContainer);
 	virtual	void		MouseDown(BPoint point);
-	virtual void			AttachedToWindow(void);
+	virtual void		AttachedToWindow(void);
 	virtual	BMessage*	GetContainer(void){return container;};
 	virtual	void		ValueChanged(void);
 
@@ -28,7 +27,7 @@ protected:
 	BMessage			*container;
 	BMessage			*editMessage;
 	BMessage			*baseEditMessage;
-	PDocument			*doc;
+	
 private:
 };
 #endif
