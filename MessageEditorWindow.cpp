@@ -3,30 +3,33 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
+#include <Catalog.h>
+#include <LayoutBuilder.h>
+#include <Application.h>
 
 #include "MessageEditorWindow.h"
+#include "MessageEditorDefs.h"
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "MessageEditorWindow"
+
 
 MessageEditorWindow::MessageEditorWindow(float left, float top, float right, float bottom)
 	: 
 	BWindow(BRect(left,top,right,bottom), "MessageEditor", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS)
 {
-	fCurrentMessage = NULL
-	mListView = new MessageEditor(fCurrentMessage);
+	fCurrentMessage = NULL;
+	mListView = new MessageListView(fCurrentMessage);
 
 	
 	fTopMenuBar = new BMenuBar("topmenubar");
 	fMessageFileTextControl = new BTextControl(B_TRANSLATE("Message File"), "", 
-											new BMessage(MENU_FILE_OPEN));
+											new BMessage(FILE_OPEN));
 
 	fChooseMessageFileButton = new BButton(B_TRANSLATE("Choose Message File"),
-											new BMessage(MW_BUTTON_CHOOSEMESSAGEFILE));
+											new BMessage(MENU_FILE_OPEN));
 											
-	fOpenFilePanel = new BFilePanel(B_OPEN_PANEL, 
-									new BMessenger(this), 
-									NULL,
-									B_FILE_NODE,
-									false,
-									new BMessage(MW_REF_MESSAGEFILE));
+	fOpenFilePanel = new BFilePanel();
 	
 	
 	
@@ -36,7 +39,7 @@ MessageEditorWindow::MessageEditorWindow(float left, float top, float right, flo
 			.AddItem(B_TRANSLATE("Quit"), B_QUIT_REQUESTED, 'Q')
 		.End()
 		.AddMenu(B_TRANSLATE("Help"))
-			.AddItem(B_TRANSLATE("About"), MW_MENU_ABOUT)
+			.AddItem(B_TRANSLATE("About"), MENU_APP_ABOUT)
 		.End()
 	.End();
 
@@ -66,12 +69,12 @@ MessageEditorWindow::~MessageEditorWindow() {
 void
 MessageEditorWindow::MessageReceived(BMessage *msg) {
 	switch(msg->what) {
-		case MENU_ABOUT: {
+		case MENU_APP_ABOUT: {
 			be_app->PostMessage(B_ABOUT_REQUESTED);
 			break;
 		}
 		
-		case MENU_OPEN: {
+		case MENU_FILE_OPEN: {
 			fOpenFilePanel->Show();
 			break;
 		}		
@@ -84,5 +87,9 @@ MessageEditorWindow::MessageReceived(BMessage *msg) {
 }
 
 void MessageEditorWindow::SetMessage(BMessage *newMessage){
+};
+
+bool MessageEditorWindow::QuitRequested(){
+	return true;
 };
 

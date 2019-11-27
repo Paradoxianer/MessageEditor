@@ -6,26 +6,34 @@
 #define MESSAGE_EDITOR_WINDOW_H
 
 #include <Window.h>
+#include <TextControl.h>
+#include <MenuBar.h>
+#include <Button.h>
 #include <SupportDefs.h>
 #include <FilePanel.h>
 
 #include "MessageListView.h"
 
 
+
 class MessageEditorWindow: public BWindow {
 public:
-	MessageEditorWindow(float left, float top, float right, float bottom);
-	~MessageEditorWindow();
-	void MessageReceived(BMessage *msg);
-	void SetMessage(BMessage *newMessage);
-	BMessage* Message(){return fCurrentMessage;};
-	bool QuitRequested();
+				MessageEditorWindow(float left, float top, float right, float bottom);
+				~MessageEditorWindow();
+	void		MessageReceived(BMessage *msg);
+	void		SetMessage(BMessage *newMessage);
+	BMessage*	Message(){return fCurrentMessage;};
+	bool		QuitRequested();
 
 private:
 		
-	MessageListView	*mListView;
-	BMessage		*fCurrentMessage;
-	BFilePanel		*fOpenFilePanel;
+	MessageListView		*mListView;
+	BMessage			*fCurrentMessage;
+	BFilePanel			*fOpenFilePanel;
+	BMenuBar			*fTopMenuBar;
+	
+	BTextControl		*fMessageFileTextControl;
+	BButton				*fChooseMessageFileButton;
 
 	
 };
