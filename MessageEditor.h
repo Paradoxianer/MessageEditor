@@ -1,20 +1,37 @@
-/*
- * Copyright 2015 Your Name <your@email.address>
- * All rights reserved. Distributed under the terms of the MIT license.
+/**
+ * @class MessageEditor
+ * @brief Main Application Class
+ *
+ *
+ * @author Paradoxon
+ * @version 0.01
+ * @date 2018/10/04
+ *
+ * @todo Register MimeType and MimeType for the Dokumentenst also register supported mimetypes
  */
-#ifndef _H
-#define _H
 
+#ifndef MESSAGE_EDITOR_H_
+#define MESSAGE_EDITOR_H_
 
-#include <SupportDefs.h>
+#include <Application.h>
+#include "MessageEditorWindow.h"
 
+#define	APP_SIGNATURE			"application/x-vnd.MessageEditor"
 
-class {
-public:
-								
-private:
+class ProjektConceptor : public BApplication {
+    public:
+									ProjektConceptor();
+									~ProjektConceptor();
 
+	virtual	void					ReadyToRun(void);
+	virtual	bool					QuitRequested(void);
+	virtual	void					MessageReceived(BMessage *message);
+	virtual	void					RefsReceived(BMessage *message);
+	virtual	void					AboutRequested(void);
+	virtual	void					ArgvReceived(int32 argc, char **argv);
+//	virtual	void					RegisterMime(void);
+    private:
+    	MessageEditorWindow			mWindow;
+    
 };
-
-
-#endif // _H
+#endif
