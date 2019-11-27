@@ -36,6 +36,7 @@ void MessageEditor::ReadyToRun() {
 	settingsDir = new BDirectory(settings.Path());
 	err = settingsDir->CreateDirectory("MessageEditor", NULL);
 	err = settingsDir->SetTo(settingsDir, "MessageEditor");
+	mWindow->Show();
 }
 
 /**
